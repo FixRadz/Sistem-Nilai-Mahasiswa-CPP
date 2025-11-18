@@ -35,3 +35,6 @@ g++ main.cpp utils.cpp database.cpp features.cpp -o app_nilai
 * **```features.cpp```**: Logika fitur kompleks (Input Batch & Edit).
 * **```utils.cpp```**: Fungsi bantuan (Warna, Delay, Validasi Input).
 * **```main.cpp```**: Menu utama program.
+
+# Dibuat oleh: M. Fikri Raditya A. 
+# NIM: 241321050
