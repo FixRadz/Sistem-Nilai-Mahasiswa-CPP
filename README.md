@@ -15,16 +15,19 @@ Karena program ini terdiri dari beberapa file, gunakan perintah berikut untuk me
 ### Menggunakan G++ (Terminal/CMD)
 ```bash
 g++ main.cpp utils.cpp database.cpp features.cpp -o app_nilai
+```
 
 ### Cara Menjalankan
 
 #### Windows:
 ```bash
 ./app_nilai.exe
+```
 
 #### Linux/Mac:
 ```bash
 ./app_nilai
+```
 
 ## 📂 Struktur File
 * **config.h**: Menyimpan konstanta dan struct data.
