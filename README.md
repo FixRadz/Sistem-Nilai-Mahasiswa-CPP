@@ -15,3 +15,20 @@ Karena program ini terdiri dari beberapa file, gunakan perintah berikut untuk me
 ### Menggunakan G++ (Terminal/CMD)
 ```bash
 g++ main.cpp utils.cpp database.cpp features.cpp -o app_nilai
+
+### Cara Menjalankan
+
+#### Windows:
+```bash
+./app_nilai.exe
+
+#### Linux/Mac:
+```bash
+./app_nilai
+
+## 📂 Struktur File
+* **config.h**: Menyimpan konstanta dan struct data.
+* **database.cpp**: Mengurus penyimpanan file dan array.
+* **features.cpp**: Logika fitur kompleks (Input Batch & Edit).
+* **utils.cpp**: Fungsi bantuan (Warna, Delay, Validasi Input).
+* **main.cpp**: Menu utama program.
