@@ -30,8 +30,8 @@ g++ main.cpp utils.cpp database.cpp features.cpp -o app_nilai
 ```
 
 ## 📂 Struktur File
-* **config.h**: Menyimpan konstanta dan struct data.
-* **database.cpp**: Mengurus penyimpanan file dan array.
-* **features.cpp**: Logika fitur kompleks (Input Batch & Edit).
-* **utils.cpp**: Fungsi bantuan (Warna, Delay, Validasi Input).
-* **main.cpp**: Menu utama program.
+* **```config.h```**: Menyimpan konstanta dan struct data.
+* **```database.cpp```**: Mengurus penyimpanan file dan array.
+* **```features.cpp```**: Logika fitur kompleks (Input Batch & Edit).
+* **```utils.cpp```**: Fungsi bantuan (Warna, Delay, Validasi Input).
+* **```main.cpp```**: Menu utama program.
