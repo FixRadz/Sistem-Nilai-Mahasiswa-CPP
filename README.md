@@ -36,5 +36,4 @@ g++ main.cpp utils.cpp database.cpp features.cpp -o app_nilai
 * **```utils.cpp```**: Fungsi bantuan (Warna, Delay, Validasi Input).
 * **```main.cpp```**: Menu utama program.
 
-# Dibuat oleh: M. Fikri Raditya A. 
-  NIM: 241321050
+# Dibuat oleh: M. Fikri Raditya A. NIM: 241321050
