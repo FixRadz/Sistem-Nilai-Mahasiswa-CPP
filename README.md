@@ -1,83 +1,95 @@
-# 🎓 Sistem Manajemen Nilai Mahasiswa (Advanced CLI)
+# 🚀 Sistem Manajemen Nilai Mahasiswa (Enterprise Edition)
 
-![C++](https://img.shields.io/badge/Language-C++-blue.svg)
-![Status](https://img.shields.io/badge/Status-Completed-success.svg)
-![Security](https://img.shields.io/badge/Security-Encrypted-red.svg)
+![C++](https://img.shields.io/badge/Language-C++17-blue.svg)
+![Architecture](https://img.shields.io/badge/Architecture-Modular%20%26%20DLL-orange.svg)
+![Security](https://img.shields.io/badge/Security-XOR%20Encryption-red.svg)
+![Config](https://img.shields.io/badge/Config-INI%20File-green.svg)
 
-Aplikasi berbasis *Command Line Interface* (CLI) yang dirancang untuk mengelola database nilai mahasiswa secara profesional. Program ini tidak hanya sekadar kalkulator nilai, melainkan sebuah **Sistem Manajemen Database** mini yang dilengkapi dengan keamanan data, penyimpanan persisten, dan antarmuka interaktif.
+Aplikasi **Sistem Manajemen Database** berbasis CLI yang dirancang dengan standar arsitektur perangkat lunak profesional. Proyek ini mendemonstrasikan implementasi **Dynamic Link Library (DLL)** untuk keamanan enkripsi, **External Configuration** (.ini), serta manajemen memori dinamis menggunakan **Modern C++**.
 
 ---
 
-## 🔥 Fitur Unggulan (Key Features)
+## 🔥 Fitur Unggulan (Key Highlights)
 
-### 🛡️ 1. Keamanan Tingkat Tinggi (Security)
-* **Login System:** Dilengkapi autentikasi Admin saat aplikasi dibuka.
-* **Enkripsi Data (XOR Cipher):** Database disimpan dalam format teks terenkripsi (tidak bisa dibaca manusia/Notepad).
-* **Integrity Check:** Mencegah *crash* akibat manipulasi data manual (file korup).
-* **File Locking:** Database otomatis di-set menjadi *Hidden* & *Read-Only* oleh sistem operasi agar tidak terhapus tidak sengaja.
-* **Recovery Mode:** Fitur "Lupa Password" menggunakan PIN Pemulihan.
+### 🔐 1. Advanced Security Architecture
+* **Modular Encryption (DLL):** Algoritma enkripsi dipisahkan ke dalam file pustaka dinamis `mycrypto.dll`. Program utama tidak dapat berjalan tanpa lisensi/kunci dari DLL ini.
+* **XOR Ciphering:** Seluruh database siswa dan konfigurasi admin disimpan dalam format teks terenkripsi (tidak terbaca manusia/Notepad).
+* **File Locking & Integrity:** Database otomatis di-set menjadi *Hidden* & *Read-Only* oleh sistem operasi (Windows). Program juga memvalidasi "Digital Signature" (`OK|`) pada setiap baris data untuk mencegah *crash* akibat manipulasi data paksa.
+* **Secure Login:** Autentikasi Admin dengan fitur **PIN Pemulihan** (Recovery Mode) jika lupa password.
 
-### 💾 2. Manajemen Data Canggih (Data Engineering)
-* **Persistent Database:** Data tersimpan permanen di hard drive (tidak hilang saat aplikasi ditutup).
-* **Auto-Save System:** Setiap perubahan (Input/Edit/Hapus) langsung disimpan otomatis.
-* **Primary Key (NIM):** Menggunakan NIM sebagai kunci unik untuk mencegah duplikasi data.
-* **Dynamic Storage:** Menggunakan `std::vector` (Modern C++) sehingga jumlah data tidak terbatas.
+### ⚙️ 2. External Configuration System
+* **`config.ini` Support:** Admin dapat mengubah **Nama Database**, **Nama Aplikasi**, dan **Kunci Enkripsi** secara langsung melalui file teks `.ini` tanpa perlu melakukan kompilasi ulang (*Re-compile*) pada program utama.
+* **Dynamic Loading:** Program membaca konfigurasi secara *real-time* saat dijalankan.
 
-### 📊 3. Analisis & Laporan
-* **Sorting:** Mengurutkan data berdasarkan Ranking (Nilai), Nama (A-Z), atau NIM.
-* **Statistik Kelas:** Menampilkan rata-rata kelas, nilai tertinggi/terendah, dan grafik kelulusan sederhana.
-* **Export to Excel:** Fitur ekspor laporan ke format `.csv` yang kompatibel dengan Microsoft Excel.
+### 💾 3. Relational Data Engineering
+* **Primary Key System:** Menggunakan **NIM** sebagai identitas unik untuk mencegah duplikasi data mahasiswa.
+* **Dynamic Storage:** Migrasi dari Array Statis ke `std::vector`, memungkinkan penyimpanan data tanpa batas jumlah.
+* **Persistent Storage:** Fitur *Auto-Save* memastikan data tersimpan permanen di Hard Drive setiap kali ada perubahan.
 
-### 🎨 4. User Experience (UX)
-* **Batch Input:** Mode input banyak data sekaligus dengan fitur *Draft* dan *Review*.
-* **Interactive UI:** Menggunakan warna (ANSI Color Code) dan efek *typing delay* agar terasa hidup.
-* **Robust Input:** Validasi input angka/huruf untuk mencegah program *error*.
+### 📊 4. Reporting & Analytics
+* **Smart Sorting:** Pengurutan data berdasarkan Ranking Nilai, Abjad Nama, atau Urutan NIM.
+* **Class Statistics:** Dashboard visual untuk memantau performa kelas (Rata-rata, Nilai Tertinggi/Terendah, Grafik Kelulusan).
+* **Excel Export:** Ekspor laporan ke format `.csv` (Comma Separated Values).
+
+### 🎨 5. User Experience (UX)
+* **Batch Input:** Mode input banyak data sekaligus dengan fitur *Draft*, *Review*, dan validasi duplikasi NIM.
+* **Interactive UI:** Menggunakan warna (ANSI Color Code) dan efek *typing delay*.
 
 ---
 
 ## 📂 Struktur Modular
-Program ini dibangun dengan arsitektur modular untuk kemudahan pengembangan:
 
-| Nama File | Deskripsi Fungsi |
+Proyek ini memisahkan logika menjadi beberapa layer untuk kemudahan *maintenance*:
+
+| File / Modul | Peran & Fungsi |
 | :--- | :--- |
-| **`main.cpp`** | **Orchestrator.** Mengatur alur utama, login, dan menu navigasi. |
-| **`database.cpp`** | **Backend Logic.** Mengurus Load/Save file, Enkripsi, dan CRUD Vector. |
-| **`features.cpp`** | **Frontend Logic.** Menangani fitur Input, Sorting, Statistik, dan Export. |
-| **`utils.cpp`** | **Utility & Security.** Mesin enkripsi, sistem login, dan helper visual. |
-| **`config.h`** | **Configuration.** Menyimpan Struct data dan konstanta global. |
+| **`main.cpp`** | **Orchestrator.** Mengatur alur utama, inisialisasi sistem, dan UI menu. |
+| **`mycrypto.dll`** | **Security Engine.** Pustaka dinamis berisi logika Enkripsi/Dekripsi (Source: `mycrypto.cpp`). |
+| **`config.ini`** | **Settings.** File pengaturan eksternal (Nama DB & Kunci Enkripsi). |
+| **`database.cpp`** | **Backend.** Menangani CRUD Vector, File I/O, dan Logika NIM. |
+| **`features.cpp`** | **Frontend Logic.** Menangani fitur Input Batch, Sorting, Export, dan Statistik. |
+| **`utils.cpp`** | **Utility.** Menangani Login System, Config Parser, dan Helper UI. |
+| **`config.h`** | **Data Structure.** Menyimpan Struct DataMhs dan konstanta global. |
 
 ---
 
-## 🚀 Cara Instalasi & Menjalankan
+## 🛠️ Cara Instalasi & Kompilasi (PENTING!)
 
-Karena program ini terdiri dari beberapa file, Anda harus mengompilasinya secara bersamaan.
+Karena menggunakan DLL, proses kompilasi dilakukan dalam **2 Tahap**. Pastikan Anda menggunakan compiler C++ (seperti MinGW/g++).
 
-### Prasyarat
-Pastikan Anda memiliki compiler C++ (seperti **g++** atau MinGW) yang terinstal.
-
-### Langkah Kompilasi (Terminal / CMD)
-Jalankan perintah berikut di folder proyek:
-
+### Tahap 1: Kompilasi DLL (Mesin Enkripsi)
+Jalankan perintah ini untuk membuat file `mycrypto.dll`:
 ```bash
-g++ main.cpp utils.cpp database.cpp features.cpp -o AppNilai
+g++ -shared -o mycrypto.dll mycrypto.cpp -DBUILD_DLL
 ```
 
-### Cara Menjalankan
-
-#### Windows:
+### Tahap 2: Kompilasi Program Utama (Linking)
+Jalankan perintah ini untuk menyatukan program dengan DLL:
 ```bash
-./app_nilai.exe
+g++ main.cpp utils.cpp database.cpp features.cpp -o AppNilai -L. -lmycrypto
 ```
 
-#### Linux/Mac:
+### Tahap 3: Setup Konfigurasi
+Sebelum menjalankan, pastikan file `config.ini` tersedia di folder yang sama dengan isi:
 ```bash
-./app_nilai
+[App]
+AppName=Sistem Nilai Mahasiswa Pro
+Version=3.0
+
+[Database]
+FileName=database.txt
+AdminFile=admin_config.txt
+
+[Security]
+EncryptionKey=FIKRIGANTENG
 ```
+
 ## 📖 Panduan Penggunaan Singkat
-* **Setup Awal**: Saat pertama kali dijalankan, program akan mendeteksi bahwa belum ada Admin. Anda akan diminta membuat Username, Password, dan PIN Pemulihan.
-* **Menu Utama**: Gunakan angka (1-13) untuk navigasi menu.
-* **Input Data**: Pastikan NIM unik. Jika NIM sudah ada, program akan menolak.
-* **Lupa Password**: Saat login, ketik LUPA untuk mereset password menggunakan PIN.
+* **Jalankan Aplikasi**: Buka file `.exe` hasil kompilasi. Pastikan `mycrypto.dll` berada di folder yang sama.
+* **Registrasi Admin**: Saat pertama kali dibuka, sistem akan mendeteksi belum ada admin dan meminta pembuatan Akun & PIN.
+* **Manajemen Data**: Lakukan Input (Batch/Satuan), Edit, atau Hapus data menggunakan NIM sebagai acuan.
+* **Lupa Password**: Saat login, ketik `LUPA` untuk mereset password menggunakan PIN yang dibuat saat registrasi.
+* **Ubah Konfigurasi**: Edit file `config.ini` jika ingin mengganti nama database atau kunci enkripsi (Data lama akan menjadi tidak terbaca jika kunci diubah).
 
 ## 👨‍💻 Credits
 * **Developer**: M. Fikri Raditya A.
@@ -85,5 +97,5 @@ g++ main.cpp utils.cpp database.cpp features.cpp -o AppNilai
 
 ---
 
-Note: Jika ingin melihat versi kode yang lebih sederhana (tanpa enkripsi), silakan ganti branch ke
-`demo-version`.
+Note: Branch `main` berisi versi Enterprise (Full Features). Untuk melihat versi dasar tanpa DLL/Enkripsi, 
+silakan cek branch `demo-version`.
