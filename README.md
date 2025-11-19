@@ -1,20 +1,65 @@
-# Aplikasi Manajemen Nilai Mahasiswa (C++)
+# 🎓 Sistem Manajemen Nilai Mahasiswa (Advanced CLI)
 
-Program CLI berbasis C++ untuk mengelola data nilai mahasiswa dengan fitur database persisten dan antarmuka interaktif.
+![C++](https://img.shields.io/badge/Language-C++-blue.svg)
+![Status](https://img.shields.io/badge/Status-Completed-success.svg)
+![Security](https://img.shields.io/badge/Security-Encrypted-red.svg)
 
-## 🚀 Fitur Unggulan
-* **Modular Code**: Struktur kode terpisah (Header & Implementation) agar mudah dikembangkan.
-* **Auto-Save System**: Data otomatis tersimpan ke `database.txt`. Tidak hilang meski program ditutup.
-* **Batch Input**: Fitur input banyak data sekaligus dengan opsi "Interupsi/Batal".
-* **Interactive UI**: Menggunakan warna dan efek ketikan agar user experience lebih hidup.
-* **CRUD Lengkap**: Create, Read, Update, Delete, dan Search data.
+Aplikasi berbasis *Command Line Interface* (CLI) yang dirancang untuk mengelola database nilai mahasiswa secara profesional. Program ini tidak hanya sekadar kalkulator nilai, melainkan sebuah **Sistem Manajemen Database** mini yang dilengkapi dengan keamanan data, penyimpanan persisten, dan antarmuka interaktif.
 
-## 🛠️ Cara Kompilasi & Menjalankan
-Karena program ini terdiri dari beberapa file, gunakan perintah berikut untuk mengompilasi:
+---
 
-### Menggunakan G++ (Terminal/CMD)
+## 🔥 Fitur Unggulan (Key Features)
+
+### 🛡️ 1. Keamanan Tingkat Tinggi (Security)
+* **Login System:** Dilengkapi autentikasi Admin saat aplikasi dibuka.
+* **Enkripsi Data (XOR Cipher):** Database disimpan dalam format teks terenkripsi (tidak bisa dibaca manusia/Notepad).
+* **Integrity Check:** Mencegah *crash* akibat manipulasi data manual (file korup).
+* **File Locking:** Database otomatis di-set menjadi *Hidden* & *Read-Only* oleh sistem operasi agar tidak terhapus tidak sengaja.
+* **Recovery Mode:** Fitur "Lupa Password" menggunakan PIN Pemulihan.
+
+### 💾 2. Manajemen Data Canggih (Data Engineering)
+* **Persistent Database:** Data tersimpan permanen di hard drive (tidak hilang saat aplikasi ditutup).
+* **Auto-Save System:** Setiap perubahan (Input/Edit/Hapus) langsung disimpan otomatis.
+* **Primary Key (NIM):** Menggunakan NIM sebagai kunci unik untuk mencegah duplikasi data.
+* **Dynamic Storage:** Menggunakan `std::vector` (Modern C++) sehingga jumlah data tidak terbatas.
+
+### 📊 3. Analisis & Laporan
+* **Sorting:** Mengurutkan data berdasarkan Ranking (Nilai), Nama (A-Z), atau NIM.
+* **Statistik Kelas:** Menampilkan rata-rata kelas, nilai tertinggi/terendah, dan grafik kelulusan sederhana.
+* **Export to Excel:** Fitur ekspor laporan ke format `.csv` yang kompatibel dengan Microsoft Excel.
+
+### 🎨 4. User Experience (UX)
+* **Batch Input:** Mode input banyak data sekaligus dengan fitur *Draft* dan *Review*.
+* **Interactive UI:** Menggunakan warna (ANSI Color Code) dan efek *typing delay* agar terasa hidup.
+* **Robust Input:** Validasi input angka/huruf untuk mencegah program *error*.
+
+---
+
+## 📂 Struktur Modular
+Program ini dibangun dengan arsitektur modular untuk kemudahan pengembangan:
+
+| Nama File | Deskripsi Fungsi |
+| :--- | :--- |
+| **`main.cpp`** | **Orchestrator.** Mengatur alur utama, login, dan menu navigasi. |
+| **`database.cpp`** | **Backend Logic.** Mengurus Load/Save file, Enkripsi, dan CRUD Vector. |
+| **`features.cpp`** | **Frontend Logic.** Menangani fitur Input, Sorting, Statistik, dan Export. |
+| **`utils.cpp`** | **Utility & Security.** Mesin enkripsi, sistem login, dan helper visual. |
+| **`config.h`** | **Configuration.** Menyimpan Struct data dan konstanta global. |
+
+---
+
+## 🚀 Cara Instalasi & Menjalankan
+
+Karena program ini terdiri dari beberapa file, Anda harus mengompilasinya secara bersamaan.
+
+### Prasyarat
+Pastikan Anda memiliki compiler C++ (seperti **g++** atau MinGW) yang terinstal.
+
+### Langkah Kompilasi (Terminal / CMD)
+Jalankan perintah berikut di folder proyek:
+
 ```bash
-g++ main.cpp utils.cpp database.cpp features.cpp -o app_nilai
+g++ main.cpp utils.cpp database.cpp features.cpp -o AppNilai
 ```
 
 ### Cara Menjalankan
@@ -28,12 +73,6 @@ g++ main.cpp utils.cpp database.cpp features.cpp -o app_nilai
 ```bash
 ./app_nilai
 ```
-
-## 📂 Struktur File
-* **```config.h```**: Menyimpan konstanta dan struct data.
-* **```database.cpp```**: Mengurus penyimpanan file dan array.
-* **```features.cpp```**: Logika fitur kompleks (Input Batch & Edit).
-* **```utils.cpp```**: Fungsi bantuan (Warna, Delay, Validasi Input).
-* **```main.cpp```**: Menu utama program.
+## 📖 Panduan Penggunaan Singkat
 
 # Dibuat oleh: M. Fikri Raditya A. || NIM: 241321050
