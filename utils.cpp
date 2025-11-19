@@ -1,4 +1,5 @@
 #include "utils.h"
+#include "mycrypto.h"
 #include <cstdlib>
 #include <thread>
 #include <chrono>
@@ -84,18 +85,6 @@ string statusLulus(float n) {
 string globalUsername = "admin";
 string globalPassword = "123";
 string globalRecovery = "0000";
-
-// =================== ENKRIPSI CIHUYYY (XOR CIPHER) ===================
-string encryptDecrypt(string text) {
-    // Kunci Rahasia (Boleh diganti sesuka hati)
-    char key[] = {'F', 'I', 'K', 'R', 'I', 'G', 'A', 'N', 'T', 'E', 'N', 'G'}; 
-    string output = text;
-    
-    for (size_t i = 0; i < text.size(); i++) {
-        output[i] = text[i] ^ key[i % (sizeof(key) / sizeof(char))];
-    }
-    return output;
-}
 
 void simpanAkun(string user, string pass, string rec) {
     system("attrib -r -h admin_config.txt > nul");
@@ -245,4 +234,30 @@ void gantiPasswordAdmin() {
     globalRecovery = newRec;
 
     ketikLine("\nAkun admin berhasil diperbarui!", HIJAU);
+}
+
+string getIniValue(string section, string key) {
+    ifstream file("config.ini");
+    if (!file.is_open()) return ""; 
+
+    string line, currentSection, result = "";
+    while (getline(file, line)) {
+        if (line.empty() || line[0] == ';') continue;
+        if (line.front() == '[' && line.back() == ']') {
+            currentSection = line.substr(1, line.size() - 2);
+            continue;
+        }
+        if (currentSection == section) {
+            size_t pos = line.find('=');
+            if (pos != string::npos) {
+                string k = line.substr(0, pos);
+                if (k == key) {
+                    result = line.substr(pos + 1);
+                    break;
+                }
+            }
+        }
+    }
+    file.close();
+    return result;
 }

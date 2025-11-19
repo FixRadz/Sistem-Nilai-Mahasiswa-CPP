@@ -21,6 +21,6 @@ string statusLulus(float n);
 // Fungsi Login
 void loginSystem();
 void gantiPasswordAdmin();
-string encryptDecrypt(string text);
+string getIniValue(string section, string key);
 
 #endif

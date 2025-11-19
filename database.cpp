@@ -1,5 +1,6 @@
 #include "database.h"
 #include "utils.h"
+#include "mycrypto.h"
 #include <iostream> 
 #include <fstream>  
 #include <sstream>  // stringstream
@@ -15,9 +16,13 @@ vector<DataMhs> db;
 
 // =================== 1. FUNGSI SIMPAN FILE (Auto-Save) ===================
 void saveToFile() {
-    system("attrib -r -h database.txt > nul"); // Decrypt
-    ofstream file("database.txt"); // Membuka file untuk menulis
+    string dbName = getIniValue("Database", "FileName");
+    if (dbName.empty()) dbName = "database.txt";
     
+    string cmdUnlock = "attrib -r -h " + dbName + " > nul";
+    system(cmdUnlock.c_str());
+
+    ofstream file(dbName);
     if (file.is_open()) {
         for (int i = 0; i < db.size(); i++) {
             // Format simpan: Nama|Tugas|UTS|UAS
@@ -31,37 +36,39 @@ void saveToFile() {
         }
         file.close();
     }
-    system("attrib +r +h database.txt > nul"); // Encrypt
+    string cmdLock = "attrib +r +h " + dbName + " > nul";
+    system(cmdLock.c_str());
 }
 
 // =================== 2. FUNGSI BACA FILE (Auto-Load) ===================
 void loadFromFile() {
-    ifstream file("database.txt"); // Membuka file untuk membaca
-    if (!file.is_open()) return; // Kalau file tidak ada, lanjut saja (database kosong)
+    string dbName = getIniValue("Database", "FileName");
+    if (dbName.empty()) dbName = "database.txt";
+
+    ifstream file(dbName);
+    if (!file.is_open()) return;
 
     db.clear();
     string line;
     int dataRusak = 0;
 
-    // Baca baris per baris
     while (getline(file, line)) {
         if (line.empty()) continue;
 
-        // 1. Decrypt
+        // Dekripsi (Pake DLL)
         string decryptedLine = encryptDecrypt(line);
 
-        // 2. CEK INTEGRITAS (Apakah depannya "OK|"? )
+        // CEK STEMPEL "OK|"
         if (decryptedLine.size() < 3 || decryptedLine.substr(0, 3) != "OK|") {
             dataRusak++; 
-            continue; // DATA PALSU/RUSAK -> LEWAT!
+            continue; 
         }
 
-        // 3. Buang stempel "OK|"
+        // Buang stempel "OK|"
         string cleanLine = decryptedLine.substr(3);
 
-        // 4. Parsing Data
+        // Parsing Data
         stringstream ss(cleanLine);
-        string segment;
         DataMhs temp;
         
         if (!getline(ss, temp.nim, '|')) continue;
