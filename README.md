@@ -74,5 +74,16 @@ g++ main.cpp utils.cpp database.cpp features.cpp -o AppNilai
 ./app_nilai
 ```
 ## 📖 Panduan Penggunaan Singkat
+* **Setup Awal**: Saat pertama kali dijalankan, program akan mendeteksi bahwa belum ada Admin. Anda akan diminta membuat Username, Password, dan PIN Pemulihan.
+* **Menu Utama**: Gunakan angka (1-13) untuk navigasi menu.
+* **Input Data**: Pastikan NIM unik. Jika NIM sudah ada, program akan menolak.
+* **Lupa Password**: Saat login, ketik LUPA untuk mereset password menggunakan PIN.
 
-# Dibuat oleh: M. Fikri Raditya A. || NIM: 241321050
+## 👨‍💻 Credits
+* **Developer**: M. Fikri Raditya A.
+* **NIM**: 241321050
+
+---
+
+Note: Jika ingin melihat versi kode yang lebih sederhana (tanpa enkripsi), silakan ganti branch ke
+`demo-version`.
