@@ -3,16 +3,19 @@
 
 #include "config.h"
 
-extern DataMhs db[MAKS_DATA];
-extern int jumlahData;
+extern vector<DataMhs> db;
 
 void simpanData(const DataMhs& m);
 void tampilkanDatabase();
 void cariData();
 void hapusData();
 
-// === FITUR BARU: FILE HANDLING ===
+// === FILE HANDLING ===
 void saveToFile(); // Simpan ke database.txt
 void loadFromFile(); // Baca dari database.txt
+
+// === CEK NIM ===
+bool cekNIMDuplikat(string nimBaru);
+int cariIndexByNIM(string nimTarget);
 
 #endif

@@ -6,7 +6,7 @@
 #include <chrono>
 
 int main() {
-    // Intro Mewah
+    loginSystem();
     loadFromFile();
     clearScrean();
     cout << BIRU << "###############################################\n" << RESET;
@@ -38,6 +38,11 @@ int main() {
         cout << "6. Hapus Data Mahasiswa\n";
         cout << "7. Edit Data Mahasiswa\n";
         cout << "8. " << KUNING << "Input Banyak Data (Batch Mode)" << RESET << "\n";
+        cout << "9. " << HIJAU << "Urutkan Data (Sorting)" << RESET << "\n";
+        cout << "10. " << UNGU << "Lihat Statistik Kelas" << RESET << "\n";
+        cout << "11. Ekspor Data ke Excel (.csv)\n";
+        cout << "12. Ganti Password/Username Admin\n";
+        cout << "13. " << BIRU << "Tentang Aplikasi (Credits)" << RESET << "\n";
         
         cout << "\n>> Pilih menu: ";
         getline(cin, inputMenu);
@@ -114,6 +119,43 @@ int main() {
                 break;
             case 8:
                 clearScrean(); inputBanyakData();
+                cin.get();
+                break;
+            case 9:
+                clearScrean(); urutkanData();
+                cin.get();
+                break;
+            case 10:
+                tampilkanStatistik(); // Tidak perlu clearScreen karena di dalam fungsi sudah ada
+                cout << "\nTekan Enter untuk kembali...";
+                cin.get();
+                break;
+            case 11:
+                exportToCSV();
+                cout << "\nTekan Enter untuk kembali...";
+                cin.get();
+                break;
+            case 12:
+                gantiPasswordAdmin();
+                cout << "\nTekan Enter untuk kembali...";
+                cin.get();
+                break;
+            case 13:
+                clearScrean();
+                cout << BIRU << "==============================================\n" << RESET;
+                ketikLine("   SISTEM MANAJEMEN NILAI MAHASISWA V3.0", KUNING);
+                cout << BIRU << "==============================================\n" << RESET;
+                cout << "\nDibuat dengan " << MERAH << "Cinta" << RESET << " & " << HIJAU << "Kopi" << RESET << " oleh:\n";
+                cout << "Nama  : " << UNGU << "Muhammad Fikri Raditya A." << RESET << endl;
+                cout << "NIM   : " << UNGU << "241321050" << RESET << endl;
+                cout << "Kelas : 2B-TLI" << endl;
+                cout << "\nFitur Unggulan:\n";
+                cout << "- Enkripsi Database XOR Cipher\n";
+                cout << "- Proteksi File Sistem\n";
+                cout << "- Analisis Statistik & Sorting\n";
+                cout << "\nGithub: github.com/FixRadz\n";
+                cout << "----------------------------------------------\n";
+                cout << "Tekan Enter untuk kembali...";
                 cin.get();
                 break;
             default:

@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <iomanip>
+#include <vector>
 
 using namespace std;
 
@@ -26,10 +27,9 @@ const int BATAS_GRADE_C = 60;
 const int BATAS_GRADE_D = 50;
 const int BATAS_LULUS   = 60;
 
-const int MAKS_DATA = 100;
-
 // =================== DATA UTAMA ===================
 struct DataMhs {
+    string nim;
     string nama;
     float tugas;
     float uts;

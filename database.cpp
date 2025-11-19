@@ -4,100 +4,121 @@
 #include <fstream>  
 #include <sstream>  // stringstream
 #include <iomanip>
+#include <chrono>
+#include <thread>
+#include <vector>
 
 using namespace std;
 
 // Alokasi memori untuk database
-DataMhs db[MAKS_DATA];
-int jumlahData = 0;
+vector<DataMhs> db;
 
 // =================== 1. FUNGSI SIMPAN FILE (Auto-Save) ===================
 void saveToFile() {
+    system("attrib -r -h database.txt > nul"); // Decrypt
     ofstream file("database.txt"); // Membuka file untuk menulis
     
     if (file.is_open()) {
-        for (int i = 0; i < jumlahData; i++) {
+        for (int i = 0; i < db.size(); i++) {
             // Format simpan: Nama|Tugas|UTS|UAS
-            file << db[i].nama << "|"
-                 << db[i].tugas << "|"
-                 << db[i].uts << "|"
-                 << db[i].uas << "\n";
+            string rawLine = "OK|" + db[i].nim + "|" + db[i].nama + "|" + 
+                            to_string(db[i].tugas) + "|" + 
+                            to_string(db[i].uts) + "|" + 
+                            to_string(db[i].uas);
+            
+            string encryptedLine = encryptDecrypt(rawLine);
+            file << encryptedLine << "\n";
         }
         file.close();
     }
+    system("attrib +r +h database.txt > nul"); // Encrypt
 }
 
 // =================== 2. FUNGSI BACA FILE (Auto-Load) ===================
 void loadFromFile() {
     ifstream file("database.txt"); // Membuka file untuk membaca
-    
     if (!file.is_open()) return; // Kalau file tidak ada, lanjut saja (database kosong)
 
-    jumlahData = 0; // Reset memori
+    db.clear();
     string line;
+    int dataRusak = 0;
 
     // Baca baris per baris
-    while (getline(file, line) && jumlahData < MAKS_DATA) {
-        stringstream ss(line);
+    while (getline(file, line)) {
+        if (line.empty()) continue;
+
+        // 1. Decrypt
+        string decryptedLine = encryptDecrypt(line);
+
+        // 2. CEK INTEGRITAS (Apakah depannya "OK|"? )
+        if (decryptedLine.size() < 3 || decryptedLine.substr(0, 3) != "OK|") {
+            dataRusak++; 
+            continue; // DATA PALSU/RUSAK -> LEWAT!
+        }
+
+        // 3. Buang stempel "OK|"
+        string cleanLine = decryptedLine.substr(3);
+
+        // 4. Parsing Data
+        stringstream ss(cleanLine);
         string segment;
         DataMhs temp;
         
-        // 1. Ambil Nama (pisahkan dengan tanda |)
+        if (!getline(ss, temp.nim, '|')) continue;
         if (!getline(ss, temp.nama, '|')) continue;
 
-        // 2. Ambil Nilai-nilai (sebagai string dulu)
         string sTugas, sUts, sUas;
         getline(ss, sTugas, '|');
         getline(ss, sUts, '|');
         getline(ss, sUas, '|');
 
         try {
-            // 3. Konversi String ke Float
             temp.tugas = stof(sTugas);
             temp.uts   = stof(sUts);
             temp.uas   = stof(sUas);
-            
-            // 4. Hitung ulang Grade & Status
             temp.akhir  = hitungNilaiAkhir(temp.tugas, temp.uts, temp.uas);
             temp.grade  = tentukanGrade(temp.akhir);
             temp.status = statusLulus(temp.akhir);
 
-            // 5. Masukkan ke RAM
-            db[jumlahData++] = temp;
-        } catch (...) {
-            // Abaikan jika ada baris data yang rusak/error
-        }
+            db.push_back(temp); 
+        } catch (...) { dataRusak++; }
     }
     file.close();
+
+    if (dataRusak > 0) {
+        cout << "\n" << MERAH << "[WARNING] " << dataRusak 
+             << " data terdeteksi rusak/dimanipulasi & telah diamankan." << RESET << endl;
+        std::this_thread::sleep_for(std::chrono::seconds(2));
+    }
 }
 
 // =================== 3. SIMPAN DATA KE MEMORI & FILE ===================
 void simpanData(const DataMhs& m) {
-    if (jumlahData < MAKS_DATA) {
-        db[jumlahData++] = m; // Masukkan ke RAM
-        saveToFile();         // Langsung update file txt
-    }
+    db.push_back(m);
+    saveToFile();
 }
 
 // =================== 4. TAMPILKAN DATABASE ===================
 void tampilkanDatabase() {
-    if (jumlahData == 0) {
+    if (db.empty()) {
         ketikLine("\n[INFO] Belum ada data mahasiswa tersimpan.", KUNING);
         return;
     }
 
     cout << BIRU << "\n=================== DATA MAHASISWA TERSIMPAN ===================" << RESET << endl;
     cout << left << setw(5) << "No"
+         << setw(12) << "NIM"
          << setw(20) << "Nama"
          << setw(10) << "Akhir"
          << setw(10) << "Grade"
          << setw(15) << "Status" << endl;
     cout << "----------------------------------------------------------------" << endl;
 
-    for (int i = 0; i < jumlahData; i++) {
+    for (int i = 0; i < db.size(); i++) {
         string warnaStatus = (db[i].status == "LULUS") ? HIJAU : MERAH;
         
         cout << left << setw(5) << i+1
+             << setw(12) << db[i].nim
              << setw(20) << db[i].nama
              << setw(10) << fixed << setprecision(2) << db[i].akhir
              << setw(10) << db[i].grade
@@ -108,89 +129,88 @@ void tampilkanDatabase() {
 
 // =================== 5. CARI DATA ===================
 void cariData() {
-    if (jumlahData == 0) {
+    if (db.empty()) {
         ketikLine("\nBelum ada data tersimpan.", KUNING);
         return;
     }
 
-    string input;
-    int nomor;
-    cout << "\nMasukkan nomor data mahasiswa yang dicari: ";
-    getline(cin, input);
+    string target = inputString("\nMasukkan NIM mahasiswa yang dicari: ");
 
-    if (input == "exit" || input == "EXIT") return;
+    if (target == "exit" || target == "EXIT") return;
+    int idx = cariIndexByNIM(target);
 
-    try { nomor = stoi(input); }
-    catch (...) { 
-        ketikLine("!!! Input tidak valid.", MERAH);
-        return; 
-    }
-
-    if (nomor < 1 || nomor > jumlahData) {
-        ketikLine("!!! Nomor tidak ditemukan.", MERAH);
+    if (idx == -1) {
+        ketikLine("!!! Data dengan NIM tersebut tidak ditemukan.", MERAH);
         return;
     }
 
-    int i = nomor - 1;
-
     cout << endl;
     cout << HIJAU << "======== DATA DITEMUKAN ========" << RESET << endl;
-    cout << "Nama   : " << db[i].nama << endl;
-    cout << "Tugas  : " << db[i].tugas << endl;
-    cout << "UTS    : " << db[i].uts << endl;
-    cout << "UAS    : " << db[i].uas << endl;
+    cout << "Nama   : " << db[idx].nama << endl;
+    cout << "Tugas  : " << db[idx].tugas << endl;
+    cout << "UTS    : " << db[idx].uts << endl;
+    cout << "UAS    : " << db[idx].uas << endl;
     cout << "--------------------------------" << endl;
-    cout << "Akhir  : " << db[i].akhir << endl;
-    cout << "Grade  : " << db[i].grade << endl;
-    cout << "Status : " << ((db[i].status == "LULUS") ? HIJAU : MERAH) << db[i].status << RESET << endl;
+    cout << "Akhir  : " << db[idx].akhir << endl;
+    cout << "Grade  : " << db[idx].grade << endl;
+    cout << "Status : " << ((db[idx].status == "LULUS") ? HIJAU : MERAH) << db[idx].status << RESET << endl;
     cout << HIJAU << "================================" << RESET << endl;
 }
 
 // =================== 6. HAPUS DATA ===================
 void hapusData() {
-    if (jumlahData == 0) {
+    if (db.empty()) {
         ketikLine("\nBelum ada data tersimpan.", KUNING);
         return;
     }
 
-    string input = inputString("\nMasukkan nomor data yang ingin dihapus (ketik 'b' batal): ");
+    // 2. Input Target (Fitur Batal TETAP ADA)
+    string target = inputString("\nMasukkan NIM yang ingin dihapus (ketik 'b' batal): ");
     
-    if (input == "b" || input == "B") {
+    if (target == "b" || target == "B") {
         ketikLine("Aksi dibatalkan.", KUNING);
         return;
     }
 
-    int nomor;
-    try { nomor = stoi(input); }
-    catch (...) { 
-        ketikLine("Input tidak valid.", MERAH);
-        return; 
-    }
+    // 3. Logika Baru: Cari Index Vector berdasarkan NIM
+    int idx = cariIndexByNIM(target);
 
-    if (nomor < 1 || nomor > jumlahData) {
-        ketikLine("Nomor data tidak ditemukan.", MERAH);
+    if (idx == -1) {
+        ketikLine("!!! NIM tidak ditemukan di database.", MERAH);
         return;
     }
 
-    int idx = nomor - 1;
-
-    // Konfirmasi
-    cout << "Yakin hapus data " << UNGU << db[idx].nama << RESET << "? (y/n): ";
+    // 4. Konfirmasi Penghapusan
+    // Tampilkan Nama & NIM biar user makin yakin
+    cout << "Yakin hapus data " << UNGU << db[idx].nama << " (" << db[idx].nim << ")" << RESET << "? (y/n): ";
     string yakin; 
     getline(cin, yakin);
 
     if (yakin == "y" || yakin == "Y") {
         cout << KUNING << "Menghapus data..." << RESET << endl;
-
-        for (int i = idx; i < jumlahData - 1; i++) {
-            db[i] = db[i + 1];
-        }
-        jumlahData--;
         
-        saveToFile(); // Update file setelah hapus
-
-        ketikLine("Data berhasil dihapus!", HIJAU);
+        // Hapus dari Vector
+        db.erase(db.begin() + idx);
+        
+        // Simpan perubahan ke file (Auto-Save)
+        saveToFile();
+        
+        ketikLine("Data berhasil dihapus secara permanen!", HIJAU);
     } else {
-        ketikLine("Batal menghapus.", KUNING);
+        ketikLine("Penghapusan dibatalkan.", KUNING);
     }
+}
+
+bool cekNIMDuplikat(string nimBaru) {
+    for (const auto& mhs : db) {
+        if (mhs.nim == nimBaru) return true;
+    }
+    return false;
+}
+
+int cariIndexByNIM(string nimTarget) {
+    for (size_t i = 0; i < db.size(); i++) {
+        if (db[i].nim == nimTarget) return (int)i;
+    }
+    return -1;
 }

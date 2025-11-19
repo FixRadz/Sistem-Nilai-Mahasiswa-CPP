@@ -4,5 +4,8 @@
 void editData();
 void inputBanyakData();
 void inputSatuanData();
+void urutkanData();
+void tampilkanStatistik();
+void exportToCSV();
 
 #endif
