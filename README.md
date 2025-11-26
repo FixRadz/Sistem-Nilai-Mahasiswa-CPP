@@ -1,101 +1,130 @@
-# 🚀 Sistem Manajemen Nilai Mahasiswa (Enterprise Edition)
+# 🎓 Sistem Informasi Akademik (SIAKAD) — Enterprise Edition
+## v3.0 (GUI, SQL, Dashboard, DLL Security)
 
 ![C++](https://img.shields.io/badge/Language-C++17-blue.svg)
-![Architecture](https://img.shields.io/badge/Architecture-Modular%20%26%20DLL-orange.svg)
-![Security](https://img.shields.io/badge/Security-XOR%20Encryption-red.svg)
-![Config](https://img.shields.io/badge/Config-INI%20File-green.svg)
+![GUI](https://img.shields.io/badge/Framework-wxWidgets%203.2-orange.svg)
+![Database](https://img.shields.io/badge/Database-SQLite3-green.svg)
+![Security](https://img.shields.io/badge/Security-XOR%20%2B%20DLL-red.svg)
+![Platform](https://img.shields.io/badge/Platform-Windows%2010%2F11-lightgrey.svg)
+![Status](https://img.shields.io/badge/Build-Stable-brightgreen.svg)
 
-Aplikasi **Sistem Manajemen Database** berbasis CLI yang dirancang dengan standar arsitektur perangkat lunak profesional. Proyek ini mendemonstrasikan implementasi **Dynamic Link Library (DLL)** untuk keamanan enkripsi, **External Configuration** (.ini), serta manajemen memori dinamis menggunakan **Modern C++**.
-
----
-
-## 🔥 Fitur Unggulan (Key Highlights)
-
-### 🔐 1. Advanced Security Architecture
-* **Modular Encryption (DLL):** Algoritma enkripsi dipisahkan ke dalam file pustaka dinamis `mycrypto.dll`. Program utama tidak dapat berjalan tanpa lisensi/kunci dari DLL ini.
-* **XOR Ciphering:** Seluruh database siswa dan konfigurasi admin disimpan dalam format teks terenkripsi (tidak terbaca manusia/Notepad).
-* **File Locking & Integrity:** Database otomatis di-set menjadi *Hidden* & *Read-Only* oleh sistem operasi (Windows). Program juga memvalidasi "Digital Signature" (`OK|`) pada setiap baris data untuk mencegah *crash* akibat manipulasi data paksa.
-* **Secure Login:** Autentikasi Admin dengan fitur **PIN Pemulihan** (Recovery Mode) jika lupa password.
-
-### ⚙️ 2. External Configuration System
-* **`config.ini` Support:** Admin dapat mengubah **Nama Database**, **Nama Aplikasi**, dan **Kunci Enkripsi** secara langsung melalui file teks `.ini` tanpa perlu melakukan kompilasi ulang (*Re-compile*) pada program utama.
-* **Dynamic Loading:** Program membaca konfigurasi secara *real-time* saat dijalankan.
-
-### 💾 3. Relational Data Engineering
-* **Primary Key System:** Menggunakan **NIM** sebagai identitas unik untuk mencegah duplikasi data mahasiswa.
-* **Dynamic Storage:** Migrasi dari Array Statis ke `std::vector`, memungkinkan penyimpanan data tanpa batas jumlah.
-* **Persistent Storage:** Fitur *Auto-Save* memastikan data tersimpan permanen di Hard Drive setiap kali ada perubahan.
-
-### 📊 4. Reporting & Analytics
-* **Smart Sorting:** Pengurutan data berdasarkan Ranking Nilai, Abjad Nama, atau Urutan NIM.
-* **Class Statistics:** Dashboard visual untuk memantau performa kelas (Rata-rata, Nilai Tertinggi/Terendah, Grafik Kelulusan).
-* **Excel Export:** Ekspor laporan ke format `.csv` (Comma Separated Values).
-
-### 🎨 5. User Experience (UX)
-* **Batch Input:** Mode input banyak data sekaligus dengan fitur *Draft*, *Review*, dan validasi duplikasi NIM.
-* **Interactive UI:** Menggunakan warna (ANSI Color Code) dan efek *typing delay*.
+> Aplikasi manajemen nilai akademik mahasiswa berbasis **C++ GUI** dengan **SQL Database**, **Keamanan DLL**, dan **Dashboard Statistik**. Dikembangkan dengan standar **Enterprise Software**.
 
 ---
 
-## 📂 Struktur Modular
+## ✨ Deskripsi Singkat
+**Sistem Nilai Mahasiswa v3.0** merupakan evolusi dari aplikasi:
+- **v1.0 → Console + File TXT**
+- **v2.0 → Console + OOP + File TXT**
+- **v3.0 → GUI + SQLite + DLL Security + Dashboard**
 
-Proyek ini memisahkan logika menjadi beberapa layer untuk kemudahan *maintenance*:
-
-| File / Modul | Peran & Fungsi |
-| :--- | :--- |
-| **`main.cpp`** | **Orchestrator.** Mengatur alur utama, inisialisasi sistem, dan UI menu. |
-| **`mycrypto.dll`** | **Security Engine.** Pustaka dinamis berisi logika Enkripsi/Dekripsi (Source: `mycrypto.cpp`). |
-| **`config.ini`** | **Settings.** File pengaturan eksternal (Nama DB & Kunci Enkripsi). |
-| **`database.cpp`** | **Backend.** Menangani CRUD Vector, File I/O, dan Logika NIM. |
-| **`features.cpp`** | **Frontend Logic.** Menangani fitur Input Batch, Sorting, Export, dan Statistik. |
-| **`utils.cpp`** | **Utility.** Menangani Login System, Config Parser, dan Helper UI. |
-| **`config.h`** | **Data Structure.** Menyimpan Struct DataMhs dan konstanta global. |
+Versi GUI ini menghadirkan pengalaman aplikasi profesional untuk kebutuhan akademik dan penelitian.
 
 ---
 
-## 🛠️ Cara Instalasi & Kompilasi (PENTING!)
+## 🔥 Fitur Unggulan
 
-Karena menggunakan DLL, proses kompilasi dilakukan dalam **2 Tahap**. Pastikan Anda menggunakan compiler C++ (seperti MinGW/g++).
+### 🖥️ 1. Antarmuka Modern & Responsif
+- Native Windows GUI (wxWidgets)
+- Tab Navigation: **Input / Database / Dashboard / Log Aktivitas**
+- Smart UX: Auto Select Text • Enter Navigation • Real-time Validation
+- Donut Chart untuk statistik kelulusan
 
-### Tahap 1: Kompilasi DLL (Mesin Enkripsi)
-Jalankan perintah ini untuk membuat file `mycrypto.dll`:
-```bash
-g++ -shared -o mycrypto.dll mycrypto.cpp -DBUILD_DLL
+### 🗄️ 2. Backend SQL Performa Tinggi
+| Fitur | Status |
+|-------|--------|
+| SQLite Database | ✔ |
+| Pencarian realtime | ✔ |
+| Sorting otomatis | ✔ |
+| Filter lulus/gagal | ✔ |
+| Performa ribuan data | ✔ |
+
+### 📸 3. Asset Manager Pintar
+- Upload pas foto mahasiswa
+- Otomatis di-*compress* & *resize*
+- *Garbage Collection* → Foto terhapus otomatis ketika data dihapus
+
+### 🛡️ 4. Sistem Keamanan Enterprise
+| Komponen | Teknologi |
+|---------|-----------|
+| Login & autentikasi | ✔ |
+| PIN Recovery | ✔ |
+| DLL Encryption Module | `mycrypto.dll` |
+| File Protection | Hidden + Locked |
+
+### 📄 5. Laporan Akademik Profesional
+- Export KHS (HTML Print-Ready)
+- Import & Export CSV (Excel Compatible)
+
+---
+
+## 📂 Struktur Arsitektur
+```
+📦 SistemNilaiV3
+ ┣ 📁 assets              → Foto & icon aplikasi
+ ┣ 📄 MainApp.exe         → UI & business logic
+ ┣ 📄 mycrypto.dll        → Modul enkripsi & autentikasi
+ ┣ 📄 sqlite3.o           → Engine database SQLite
+ ┣ 📄 config.ini          → Secret key & konfigurasi
+ ┗ 📄 data.db             → Database mahasiswa
 ```
 
-### Tahap 2: Kompilasi Program Utama (Linking)
-Jalankan perintah ini untuk menyatukan program dengan DLL:
+---
+
+## 🚀 Cara Instalasi
+
+### Untuk Pengguna Umum
+1. Masuk ke tab **Releases**
+2. Download **Setup_SistemNilai_v3.0.exe**
+3. Install seperti aplikasi Windows biasa
+4. Jalankan dari shortcut Desktop
+
+### Untuk Developer (Build from Source)
+**Prasyarat**
+- MinGW-w64 (C++17)
+- wxWidgets 3.2 (compiled)
+- SQLite3 library
+
+**Perintah Build**
 ```bash
-g++ main.cpp utils.cpp database.cpp features.cpp -o AppNilai -L. -lmycrypto
+g++ MainApp.cpp MainFrame.cpp LoginDialog.cpp DetailDialog.cpp ChangePasswordDialog.cpp Database.cpp Mahasiswa.cpp assets/resource.o sqlite3.o -o MainApp.exe -I D:\Path\To\wxWidgets\include -I D:\Path\To\wxWidgets\lib\gcc_dll\mswu -L D:\Path\To\wxWidgets\lib\gcc_dll -lwxmsw32u -mwindows -D__WXMSW__ -D_UNICODE -DUNICODE -L. -lmycrypto -static-libgcc -static-libstdc++
 ```
-
-### Tahap 3: Setup Konfigurasi
-Sebelum menjalankan, pastikan file `config.ini` tersedia di folder yang sama dengan isi:
-```bash
-[App]
-AppName=Sistem Nilai Mahasiswa Pro
-Version=3.0
-
-[Database]
-FileName=database.txt
-AdminFile=admin_config.txt
-
-[Security]
-EncryptionKey=FIKRIGANTENG
-```
-
-## 📖 Panduan Penggunaan Singkat
-* **Jalankan Aplikasi**: Buka file `.exe` hasil kompilasi. Pastikan `mycrypto.dll` berada di folder yang sama.
-* **Registrasi Admin**: Saat pertama kali dibuka, sistem akan mendeteksi belum ada admin dan meminta pembuatan Akun & PIN.
-* **Manajemen Data**: Lakukan Input (Batch/Satuan), Edit, atau Hapus data menggunakan NIM sebagai acuan.
-* **Lupa Password**: Saat login, ketik `LUPA` untuk mereset password menggunakan PIN yang dibuat saat registrasi.
-* **Ubah Konfigurasi**: Edit file `config.ini` jika ingin mengganti nama database atau kunci enkripsi (Data lama akan menjadi tidak terbaca jika kunci diubah).
-
-## 👨‍💻 Credits
-* **Developer**: M. Fikri Raditya A.
-* **NIM**: 241321050
+> Pastikan `sqlite3.o` dan `resource.o` sudah dikompilasi sebelumnya.
 
 ---
 
-Note: Branch `main` berisi versi Enterprise (Full Features). Untuk melihat versi dasar tanpa DLL/Enkripsi, 
-silakan cek branch `demo-version`.
+## 🧪 Roadmap Pengembangan
+
+| Versi | Fitur Utama | Status |
+|-------|-------------|--------|
+| v1.0 | Console + File TXT | 🔴 Legacy |
+| v2.0 | Console + OOP | 🟡 Legacy |
+| **v3.0** | **GUI + SQL + DLL + Dashboard** | 🟢 Stable |
+| v4.0 | Multi-User + Cloud Sync | 🔜 In Progress |
+
+---
+
+## 👨‍💻 Pengembang
+| Informasi | Data |
+|----------|------|
+| Developer | **M. Fikri R.A.** |
+| NIM | **241321050** |
+| Institusi | **Politeknik Negeri Bandung** |
+| Dosen Pengampu | **Algoritma & Pemrograman** |
+| Tools | VS Code • MinGW-w64 • wxWidgets • SQLite • Inno Setup |
+
+---
+
+## 📌 Lisensi
+Repositori ini dibagikan untuk keperluan **pendidikan, penelitian, dan pengembangan**.  
+Penggunaan komersial tanpa izin **tidak diperbolehkan**.
+
+---
+
+## ⭐ Dukungan
+Jika aplikasi ini bermanfaat:
+- Klik **Star ⭐** untuk mendukung repository ini
+- Boleh dibuat **Fork / Pull Request**
+- Terbuka untuk kolaborasi pengembangan versi berikutnya
+
+> _“Code to Learn, Build to Improve.”_ 🚀
