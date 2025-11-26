@@ -1,7 +1,8 @@
 #include "mycrypto.h"
 #include <fstream>
 
-// Kita copy parser config versi mini ke sini biar DLL mandiri
+using namespace std;
+
 string getKeyFromIni() {
     ifstream file("config.ini");
     string line, section;

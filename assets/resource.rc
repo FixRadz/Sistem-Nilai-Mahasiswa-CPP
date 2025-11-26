@@ -1,0 +1,26 @@
+MAINICON ICON "logo.ico"
+
+// === INFORMASI VERSI & COPYRIGHT ===
+1 VERSIONINFO
+FILEVERSION     3,0,0,0
+PRODUCTVERSION  3,0,0,0
+BEGIN
+  BLOCK "StringFileInfo"
+  BEGIN
+    BLOCK "040904E4"
+    BEGIN
+      VALUE "CompanyName",      "Fikri Best Engnineer"
+      VALUE "FileDescription",  "Aplikasi Manajemen Nilai Mahasiswa"
+      VALUE "FileVersion",      "3.0.0.0"
+      VALUE "InternalName",     "SistemNilai"
+      VALUE "LegalCopyright",   "Copyright (C) 2025 Fikri. All Rights Reserved."
+      VALUE "OriginalFilename", "SistemNilai.exe"
+      VALUE "ProductName",      "Academic Grade System Enterprise"
+      VALUE "ProductVersion",   "3.0"
+    END
+  END
+  BLOCK "VarFileInfo"
+  BEGIN
+    VALUE "Translation", 0x409, 1252
+  END
+END

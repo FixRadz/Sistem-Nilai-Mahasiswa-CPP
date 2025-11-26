@@ -2,7 +2,6 @@
 #define MYCRYPTO_H
 
 #include <string>
-using namespace std;
 
 #ifdef BUILD_DLL
     #define DLL_API __declspec(dllexport)
@@ -11,7 +10,7 @@ using namespace std;
 #endif
 
 extern "C" {
-    DLL_API string encryptDecrypt(string text); 
+    DLL_API std::string encryptDecrypt(std::string text); 
 }
 
 #endif
